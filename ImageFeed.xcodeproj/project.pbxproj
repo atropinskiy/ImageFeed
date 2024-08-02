@@ -9,13 +9,14 @@
 /* Begin PBXBuildFile section */
 		222CB2B82C5BCE28001CB633 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222CB2B72C5BCE28001CB633 /* AppDelegate.swift */; };
 		222CB2BA2C5BCE28001CB633 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222CB2B92C5BCE28001CB633 /* SceneDelegate.swift */; };
-		222CB2BC2C5BCE28001CB633 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222CB2BB2C5BCE28001CB633 /* ViewController.swift */; };
+		222CB2BC2C5BCE28001CB633 /* ImagesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222CB2BB2C5BCE28001CB633 /* ImagesListViewController.swift */; };
 		222CB2BF2C5BCE28001CB633 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 222CB2BE2C5BCE28001CB633 /* Base */; };
 		222CB2C12C5BCE2A001CB633 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 222CB2C02C5BCE2A001CB633 /* Assets.xcassets */; };
 		222CB2C42C5BCE2A001CB633 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 222CB2C32C5BCE2A001CB633 /* Base */; };
 		222CB2CF2C5BCE2B001CB633 /* ImageFeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222CB2CE2C5BCE2B001CB633 /* ImageFeedTests.swift */; };
 		222CB2D92C5BCE2B001CB633 /* ImageFeedUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222CB2D82C5BCE2B001CB633 /* ImageFeedUITests.swift */; };
 		222CB2DB2C5BCE2B001CB633 /* ImageFeedUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222CB2DA2C5BCE2B001CB633 /* ImageFeedUITestsLaunchTests.swift */; };
+		222CB2EC2C5CF088001CB633 /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222CB2EB2C5CF088001CB633 /* ImagesListCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,7 +40,7 @@
 		222CB2B42C5BCE28001CB633 /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		222CB2B72C5BCE28001CB633 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		222CB2B92C5BCE28001CB633 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		222CB2BB2C5BCE28001CB633 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		222CB2BB2C5BCE28001CB633 /* ImagesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListViewController.swift; sourceTree = "<group>"; };
 		222CB2BE2C5BCE28001CB633 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		222CB2C02C5BCE2A001CB633 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		222CB2C32C5BCE2A001CB633 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -49,6 +50,7 @@
 		222CB2D42C5BCE2B001CB633 /* ImageFeedUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageFeedUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		222CB2D82C5BCE2B001CB633 /* ImageFeedUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFeedUITests.swift; sourceTree = "<group>"; };
 		222CB2DA2C5BCE2B001CB633 /* ImageFeedUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFeedUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		222CB2EB2C5CF088001CB633 /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,9 +101,9 @@
 		222CB2B62C5BCE28001CB633 /* ImageFeed */ = {
 			isa = PBXGroup;
 			children = (
+				222CB2ED2C5CF0A8001CB633 /* ImagesList */,
 				222CB2B72C5BCE28001CB633 /* AppDelegate.swift */,
 				222CB2B92C5BCE28001CB633 /* SceneDelegate.swift */,
-				222CB2BB2C5BCE28001CB633 /* ViewController.swift */,
 				222CB2BD2C5BCE28001CB633 /* Main.storyboard */,
 				222CB2C02C5BCE2A001CB633 /* Assets.xcassets */,
 				222CB2C22C5BCE2A001CB633 /* LaunchScreen.storyboard */,
@@ -125,6 +127,15 @@
 				222CB2DA2C5BCE2B001CB633 /* ImageFeedUITestsLaunchTests.swift */,
 			);
 			path = ImageFeedUITests;
+			sourceTree = "<group>";
+		};
+		222CB2ED2C5CF0A8001CB633 /* ImagesList */ = {
+			isa = PBXGroup;
+			children = (
+				222CB2BB2C5BCE28001CB633 /* ImagesListViewController.swift */,
+				222CB2EB2C5CF088001CB633 /* ImagesListCell.swift */,
+			);
+			path = ImagesList;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -258,7 +269,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				222CB2BC2C5BCE28001CB633 /* ViewController.swift in Sources */,
+				222CB2BC2C5BCE28001CB633 /* ImagesListViewController.swift in Sources */,
+				222CB2EC2C5CF088001CB633 /* ImagesListCell.swift in Sources */,
 				222CB2B82C5BCE28001CB633 /* AppDelegate.swift in Sources */,
 				222CB2BA2C5BCE28001CB633 /* SceneDelegate.swift in Sources */,
 			);
