@@ -1,8 +1,10 @@
 import UIKit
 
 final class ImagesListViewController: UIViewController {
-    @IBOutlet private var tableView: UITableView!
     
+    private let showSingleImageSegueIdentifier = "ShowSingleImage"
+    
+    @IBOutlet private var tableView: UITableView!
     
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
     
@@ -23,6 +25,25 @@ final class ImagesListViewController: UIViewController {
             tabBar.barTintColor = UIColor.black // Цвет невыбранных элементов
         }
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == showSingleImageSegueIdentifier {
+            guard
+                let viewController = segue.destination as? SingleImageViewController,
+                let indexPath = sender as? IndexPath
+            else {
+                assertionFailure("Invalid segue destination")
+                return
+            }
+            
+            let image = UIImage(named: photosName[indexPath.row])
+            _ = viewController.view // CRASH FIXED !?
+            viewController.imageView.image = image
+        } else {
+            super.prepare(for: segue, sender: sender)
+        }
+    }
+    
 }
 
 extension ImagesListViewController: UITableViewDataSource {
@@ -56,11 +77,12 @@ extension ImagesListViewController {
         let likeImage = isLiked ? UIImage(named: "likeOn") : UIImage(named: "likeOff")
         cell.likeButton.setImage(likeImage, for: .normal)
     }
+    
 }
 
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // TODO: - Реализовать логику при нажатии на ячейку
+        performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -75,4 +97,5 @@ extension ImagesListViewController: UITableViewDelegate {
         let cellHeight = image.size.height * scale + imageInsets.top + imageInsets.bottom
         return cellHeight
     }
+    
 }
