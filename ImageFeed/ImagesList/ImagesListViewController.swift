@@ -7,15 +7,21 @@ final class ImagesListViewController: UIViewController {
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
     
     private lazy var dateFormatter: DateFormatter = {
-            let formatter = DateFormatter()
-            formatter.dateStyle = .long
-            formatter.timeStyle = .none
-            return formatter
-        }()
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        formatter.timeStyle = .none
+        return formatter
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        
+        // TODO: У меня ощущение, что Storyboard глючит и передает формат только на Профиль. В итоге пришлось задавать внешний вид вручную.
+        if let tabBar = self.tabBarController?.tabBar {
+            tabBar.tintColor = UIColor.ypWhite // Цвет выбранного элемента
+            tabBar.barTintColor = UIColor.black // Цвет невыбранных элементов
+        }
     }
 }
 
@@ -23,16 +29,16 @@ extension ImagesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return photosName.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath)
-
+        
         guard let imageListCell = cell as? ImagesListCell else {
             return UITableViewCell()
         }
-
+        
         configCell(for: imageListCell, with: indexPath)
-
+        
         return imageListCell
     }
 }
@@ -42,10 +48,10 @@ extension ImagesListViewController {
         guard let image = UIImage(named: photosName[indexPath.row]) else {
             return
         }
-
+        
         cell.cellImage.image = image
         cell.dateLabel.text = dateFormatter.string(from: Date())
-
+        
         let isLiked = indexPath.row % 2 == 0
         let likeImage = isLiked ? UIImage(named: "likeOn") : UIImage(named: "likeOff")
         cell.likeButton.setImage(likeImage, for: .normal)
@@ -53,7 +59,9 @@ extension ImagesListViewController {
 }
 
 extension ImagesListViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {}
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // TODO: - Реализовать логику при нажатии на ячейку
+    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let image = UIImage(named: photosName[indexPath.row]) else {
