@@ -6,75 +6,62 @@ final class ProfileViewController: UIViewController {
         self.createCanvas()
     }
     
-}
-
-extension ProfileViewController {
-    
     func createCanvas() {
-        // Создаем UIImageView
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "MockUserPhoto") // Установите имя вашего изображения
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(imageView)
+        let avatarImageView = UIImageView()
+        avatarImageView.image = UIImage(named: "MockUserPhoto") // Установите имя вашего изображения
+        avatarImageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(avatarImageView)
         
-        // Создаем UILabel
-        let label1 = UILabel()
-        let label2 = UILabel()
-        let label3 = UILabel()
+        let nameLabel = UILabel()
+        nameLabel.text = "Екатерина Новикова"
+        nameLabel.textColor = .ypWhite
+        nameLabel.font = UIFont.systemFont(ofSize: 23, weight: .bold)
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        let nickLabel = UILabel()
+        nickLabel.text = "@ekaterina_nov"
+        nickLabel.textColor = .ypGray
+        nickLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        nickLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        let messageLabel = UILabel()
+        messageLabel.text = "Hello, world!"
+        messageLabel.textColor = .ypWhite
+        messageLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         let exitButton = UIButton()
-        
-        // Настройки для кнопки
         exitButton.setImage(UIImage(named: "Exit"), for: .normal)
         exitButton.translatesAutoresizingMaskIntoConstraints = false
+        
         view.addSubview(exitButton)
+        view.addSubview(nameLabel)
+        view.addSubview(nickLabel)
+        view.addSubview(messageLabel)
         
-        // Устанавливаем текст для меток
-        label1.text = "Екатерина Новикова"
-        label2.text = "@ekaterina_nov"
-        label3.text = "Hello, world!"
-        
-        // Устанавливаем цвет текста для меток
-        label1.textColor = .ypWhite
-        label2.textColor = .ypGray
-        label3.textColor = .ypWhite
-        
-        // Размеры
-        label1.font = UIFont.systemFont(ofSize: 23, weight: .bold)
-        
-        // Отключаем autoresizing mask для использования Auto Layout
-        label1.translatesAutoresizingMaskIntoConstraints = false
-        label2.translatesAutoresizingMaskIntoConstraints = false
-        label3.translatesAutoresizingMaskIntoConstraints = false
-        
-        // Добавляем метки в основной view
-        view.addSubview(label1)
-        view.addSubview(label2)
-        view.addSubview(label3)
-        
-        imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
-        imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32).isActive = true
-        imageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
-        
+        avatarImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
+        avatarImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32).isActive = true
+        avatarImageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        avatarImageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
         NSLayoutConstraint.activate([
             // Ограничения для imageView
-            exitButton.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
+            exitButton.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
             exitButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             exitButton.widthAnchor.constraint(equalToConstant: 44),
             exitButton.heightAnchor.constraint(equalToConstant: 44),
             
-            // Ограничения для label1
-            label1.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
-            label1.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            // Ограничения для nameLabel
+            nameLabel.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 8),
+            nameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             
-            // Ограничения для label2
-            label2.topAnchor.constraint(equalTo: label1.bottomAnchor, constant: 8),
-            label2.leadingAnchor.constraint(equalTo: label1.leadingAnchor),
+            // Ограничения для nickLabel
+            nickLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
+            nickLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
             
-            // Ограничения для label3
-            label3.topAnchor.constraint(equalTo: label2.bottomAnchor, constant: 22),
-            label3.leadingAnchor.constraint(equalTo: label1.leadingAnchor),
+            // Ограничения для messageLabel
+            messageLabel.topAnchor.constraint(equalTo: nickLabel.bottomAnchor, constant: 22),
+            messageLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
         ])
     }
 }
