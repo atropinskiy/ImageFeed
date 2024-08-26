@@ -17,21 +17,25 @@ final class OAuth2Service {
         completion: @escaping (Result<String, Error>) -> Void
     ) {
         guard let request = makeRequest(code) else {
-            completion(.failure(NetworkError.urlRequestError(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))))
+            completion(
+                .failure(NetworkError.urlRequestError(NSError(
+                    domain: "",
+                    code: -1,
+                    userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))))
             return
         }
         getUnsplashToken(request: request) { (result: Result<Data, Error>)  in
             let parsed = result.flatMap { data -> Result<String, Error> in
-                 do {
-                     let responseBody = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
-                     return .success(responseBody.accessToken)
-                 } catch {
-                     print("Failed to decode OAuthTokenResponseBody: \(error.localizedDescription)")
-                     print("Received data: \(String(data: data, encoding: .utf8) ?? "nil")")
-                     return .failure(error)
-                 }
-             }
-             completion(parsed)
+                do {
+                    let responseBody = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
+                    return .success(responseBody.accessToken)
+                } catch {
+                    print("Failed to decode OAuthTokenResponseBody: \(error.localizedDescription)")
+                    print("Received data: \(String(data: data, encoding: .utf8) ?? "nil")")
+                    return .failure(error)
+                }
+            }
+            completion(parsed)
         }
     }
     
