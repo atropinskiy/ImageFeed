@@ -35,53 +35,39 @@ final class ProfileImageService {
         
         let request = makeRequest(username: username, token: token)
         
-        task = urlSession.dataTask(with: request) { [weak self] (data, response, error) in
-            guard let self = self else { return }
-            if let error = error as NSError?, error.code == NSURLErrorCancelled {
-                completion(.failure(NetworkError.requestCancelled))
-                return
-            }
-            
-            if let httpResponse = response as? HTTPURLResponse {
-                print("HTTP Status Code: \(httpResponse.statusCode)")
-            }
-            
-            guard let data = data else {
-                completion(.failure(NetworkError.noData))
-                return
-            }
-            
-            do {
-                let userResult = try JSONDecoder().decode(UserResult.self, from: data)
-                let avatarURL = userResult.profileImage.small
-                self.avatarURL = avatarURL
-                completion(.success(avatarURL))
-                NotificationCenter.default
-                    .post(
-                        name: ProfileImageService.didChangeNotification,
-                        object: self,
-                        userInfo: ["URL": avatarURL])
-            } catch {
+        let task = urlSession.objectTask(for: request) {[weak self] (result: Result<UserResult, Error>) in
+            guard let self = self else {return}
+            switch result {
+            case .success(let profileImage):
+                let profileImageURL = profileImage.profileImage.medium
+                self.avatarURL = profileImageURL
+                completion(.success(profileImageURL))
+                NotificationCenter.default.post(
+                    name: ProfileImageService.didChangeNotification,
+                    object: self,
+                    userInfo: ["URL": profileImageURL])
+                self.task = nil
+            case .failure(let error):
                 completion(.failure(error))
+                self.lastUserName = nil
             }
-            
-            self.task = nil
-            self.lastUserName = nil
         }
-        task?.resume()
-    }
-    
-    private func makeRequest(username: String, token: String) -> URLRequest {
-        var urlComponents = URLComponents()
-        urlComponents.scheme = "https"
-        urlComponents.host = "api.unsplash.com"
-        urlComponents.path = "/users/\(username)"
-        guard let url = urlComponents.url else {
-            fatalError("URL error")
-        }
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        return request
+        self.task = task
+        task.resume()
     }
 }
+
+private func makeRequest(username: String, token: String) -> URLRequest {
+    var urlComponents = URLComponents()
+    urlComponents.scheme = "https"
+    urlComponents.host = "api.unsplash.com"
+    urlComponents.path = "/users/\(username)"
+    guard let url = urlComponents.url else {
+        fatalError("URL error")
+    }
+    var request = URLRequest(url: url)
+    request.httpMethod = "GET"
+    request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+    return request
+}
+
