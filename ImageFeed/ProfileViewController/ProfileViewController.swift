@@ -1,30 +1,47 @@
 import UIKit
+import Kingfisher
+
 
 final class ProfileViewController: UIViewController {
+    
+    private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
+    private var profileImageServiceObserver: NSObjectProtocol?
+    private let nameLabel = UILabel()
+    private let nickLabel = UILabel()
+    private let messageLabel = UILabel()
+    private let tokenStorage = OAuth2TokenStorage()
+    private let avatarImageView = UIImageView()
     override func viewDidLoad() {
         super.viewDidLoad()
         self.createCanvas()
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar()                                 // 6
+            }
+        updateProfile(profile: profileService.profile)
+        updateAvatar()
     }
     
     func createCanvas() {
-        let avatarImageView = UIImageView()
-        avatarImageView.image = UIImage(named: "MockUserPhoto") // Установите имя вашего изображения
+        avatarImageView.image = UIImage(named: "MockUserPhoto")
         avatarImageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(avatarImageView)
-        
-        let nameLabel = UILabel()
         nameLabel.text = "Екатерина Новикова"
         nameLabel.textColor = .ypWhite
         nameLabel.font = UIFont.systemFont(ofSize: 23, weight: .bold)
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        let nickLabel = UILabel()
         nickLabel.text = "@ekaterina_nov"
         nickLabel.textColor = .ypGray
         nickLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         nickLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        let messageLabel = UILabel()
         messageLabel.text = "Hello, world!"
         messageLabel.textColor = .ypWhite
         messageLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
@@ -64,4 +81,26 @@ final class ProfileViewController: UIViewController {
             messageLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
         ])
     }
+    private func updateProfile(profile: Profile?) {
+        guard let profile = profile else { return }
+        self.nameLabel.text = profile.name
+        self.nickLabel.text = profile.loginName
+        self.messageLabel.text = profile.bio
+    }
+    
+    private func updateAvatar() {
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL) else { return }
+        let processor = RoundCornerImageProcessor(cornerRadius: 35)
+        print(profileImageURL)
+        avatarImageView.kf.indicatorType = .activity
+        avatarImageView.kf.setImage(with: url,
+                                    placeholder: UIImage(named: "Placeholder"),
+                                    options: [.processor(processor),.cacheSerializer(FormatIndicatedCacheSerializer.png)])
+        let cache = ImageCache.default
+        cache.clearDiskCache()
+        cache.clearMemoryCache()
+    }
+    
 }
