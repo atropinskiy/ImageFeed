@@ -1,9 +1,5 @@
 import UIKit
 
-enum NetworkError: Error {
-    case httpStatusCode(Int)
-    case urlRequestError(Error)
-}
 
 final class OAuth2Service {
     static let shared = OAuth2Service()
@@ -16,6 +12,19 @@ final class OAuth2Service {
         _ code: String,
         completion: @escaping (Result<String, Error>) -> Void
     ) {
+        
+        if let task = task, task.state == .running {
+            if lastCode == code {
+                completion(.failure(NetworkError.duplicateRequest)) // Возвращаем ошибку, что запрос уже выполняется
+                return
+            } else {
+                // Отменяем предыдущий запрос
+                task.cancel()
+            }
+        }
+        
+        lastCode = code
+        
         guard let request = makeRequest(code) else {
             completion(
                 .failure(NetworkError.urlRequestError(NSError(
@@ -24,7 +33,7 @@ final class OAuth2Service {
                     userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))))
             return
         }
-        getUnsplashToken(request: request) { (result: Result<Data, Error>)  in
+        task = getUnsplashToken(request: request) { (result: Result<Data, Error>)  in
             let parsed = result.flatMap { data -> Result<String, Error> in
                 do {
                     let responseBody = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
@@ -36,6 +45,7 @@ final class OAuth2Service {
                 }
             }
             completion(parsed)
+            self.task = nil
         }
     }
     
@@ -63,36 +73,42 @@ final class OAuth2Service {
         return request
     }
     
+        
     func getUnsplashToken(
         request: URLRequest,
         responseHandler: @escaping (Result<Data, Error>) -> Void
-    ) {
+    ) -> URLSessionTask {
         let resultCompletion: (Result<Data, Error>) -> Void = { result in
             DispatchQueue.main.async {
                 responseHandler(result)
             }
         }
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            if let error = error {
-                resultCompletion(.failure(NetworkError.urlRequestError(error)))
+            if let error = error as NSError?, error.code == NSURLErrorCancelled {
+                resultCompletion(.failure(NetworkError.requestCancelled))
+                return
             }
             if let responseCode = (response as? HTTPURLResponse)?.statusCode {
-                print(responseCode)
                 if 200..<300 ~= responseCode {
                     if let data = data {
                         if let jsonString = String(data: data, encoding: .utf8) {
                             print("Server Response JSON: \(jsonString)")
                         }
                         resultCompletion(.success(data))
+                    } else {
+                        // Если данных нет
+                        resultCompletion(.failure(NetworkError.noData))
                     }
                 } else {
+                    // Возвращаем ошибку с кодом HTTP-ответа
                     resultCompletion(.failure(NetworkError.httpStatusCode(responseCode)))
                 }
-            }
-            if let data = data {
-                resultCompletion(.success(data))
+            } else {
+                // Если статус-код отсутствует
+                resultCompletion(.failure(NetworkError.invalidResponse))
             }
         }
         task.resume()
+        return task
     }
 }

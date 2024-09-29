@@ -1,4 +1,5 @@
 import WebKit
+import ProgressHUD
 
 fileprivate enum WebViewConstants {
     static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
@@ -9,14 +10,22 @@ final class WebViewViewController: UIViewController {
     @IBOutlet private var webView: WKWebView!
     @IBOutlet private var progressView: UIProgressView!
     weak var delegate: WebViewViewControllerDelegate?
+    private var estimatedProgressObservation: NSKeyValueObservation?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         loadAuthView()
         webView.navigationDelegate = self
+        estimatedProgressObservation = webView.observe(
+            \.estimatedProgress,
+             options: [],
+             changeHandler: { [weak self] _, _ in
+                 guard let self = self else { return }
+                 self.updateProgress()
+             })
     }
     
-    @IBAction func backButtonTapped(_ sender: Any) {
+    @IBAction private func backButtonTapped(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
     
@@ -65,6 +74,8 @@ final class WebViewViewController: UIViewController {
         guard let url = urlComponents.url else {
             return
         }
+        
+        
         let request = URLRequest(url: url)
         webView.load(request)
     }
@@ -80,6 +91,8 @@ extension WebViewViewController: WKNavigationDelegate {
         if let code = code(from: navigationAction) {
             delegate?.webViewViewController(self, didAuthenticateWithCode: code)
             decisionHandler(.cancel)
+            
+            
         } else {
             decisionHandler(.allow)
         }
