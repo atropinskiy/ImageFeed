@@ -13,7 +13,7 @@
 		222CB2BF2C5BCE28001CB633 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 222CB2BE2C5BCE28001CB633 /* Base */; };
 		222CB2C12C5BCE2A001CB633 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 222CB2C02C5BCE2A001CB633 /* Assets.xcassets */; };
 		222CB2C42C5BCE2A001CB633 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 222CB2C32C5BCE2A001CB633 /* Base */; };
-		222CB2CF2C5BCE2B001CB633 /* ImageFeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222CB2CE2C5BCE2B001CB633 /* ImageFeedTests.swift */; };
+		222CB2CF2C5BCE2B001CB633 /* ImagesListServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222CB2CE2C5BCE2B001CB633 /* ImagesListServiceTests.swift */; };
 		222CB2D92C5BCE2B001CB633 /* ImageFeedUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222CB2D82C5BCE2B001CB633 /* ImageFeedUITests.swift */; };
 		222CB2DB2C5BCE2B001CB633 /* ImageFeedUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222CB2DA2C5BCE2B001CB633 /* ImageFeedUITestsLaunchTests.swift */; };
 		222CB2EC2C5CF088001CB633 /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222CB2EB2C5CF088001CB633 /* ImagesListCell.swift */; };
@@ -68,7 +68,7 @@
 		222CB2C32C5BCE2A001CB633 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		222CB2C52C5BCE2A001CB633 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		222CB2CA2C5BCE2B001CB633 /* ImageFeedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageFeedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		222CB2CE2C5BCE2B001CB633 /* ImageFeedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFeedTests.swift; sourceTree = "<group>"; };
+		222CB2CE2C5BCE2B001CB633 /* ImagesListServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListServiceTests.swift; sourceTree = "<group>"; };
 		222CB2D42C5BCE2B001CB633 /* ImageFeedUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageFeedUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		222CB2D82C5BCE2B001CB633 /* ImageFeedUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFeedUITests.swift; sourceTree = "<group>"; };
 		222CB2DA2C5BCE2B001CB633 /* ImageFeedUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFeedUITestsLaunchTests.swift; sourceTree = "<group>"; };
@@ -167,7 +167,7 @@
 		222CB2CD2C5BCE2B001CB633 /* ImageFeedTests */ = {
 			isa = PBXGroup;
 			children = (
-				222CB2CE2C5BCE2B001CB633 /* ImageFeedTests.swift */,
+				222CB2CE2C5BCE2B001CB633 /* ImagesListServiceTests.swift */,
 			);
 			path = ImageFeedTests;
 			sourceTree = "<group>";
@@ -436,7 +436,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				222CB2CF2C5BCE2B001CB633 /* ImageFeedTests.swift in Sources */,
+				222CB2CF2C5BCE2B001CB633 /* ImagesListServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
