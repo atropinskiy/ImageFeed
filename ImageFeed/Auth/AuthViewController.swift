@@ -1,3 +1,7 @@
+//
+//  Created by alex_tr on 22.08.2024.
+//
+
 import UIKit
 import ProgressHUD
 
@@ -5,7 +9,7 @@ final class AuthViewController: UIViewController {
     weak var delegate: AuthViewControllerDelegate?
     
     
-    @IBOutlet private var loginButton: UIButton!
+    @IBOutlet private weak var loginButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
