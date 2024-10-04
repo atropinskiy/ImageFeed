@@ -13,7 +13,7 @@ struct Photo {
     let createdAt: Date?
     let welcomeDescription: String?
     let thumbImageURL: String
-    let largeImageURL: String
+    let fullImageURL: String
     let isLiked: Bool
 }
 
@@ -40,4 +40,8 @@ struct PhotoResult: Codable {
         case description
         case urls
     }
+}
+
+struct Liked: Codable {
+    let photo: PhotoResult
 }

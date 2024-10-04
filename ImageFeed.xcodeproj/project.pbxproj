@@ -39,6 +39,7 @@
 		22AC0E1D2C77904000012CB5 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AC0E1C2C77903F00012CB5 /* AuthViewController.swift */; };
 		22AC0E1F2C77946D00012CB5 /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AC0E1E2C77946D00012CB5 /* WebViewViewController.swift */; };
 		22AC0E212C78C8DA00012CB5 /* OAuth2Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AC0E202C78C8DA00012CB5 /* OAuth2Service.swift */; };
+		22E6C41A2CAFFD0300BDBF12 /* ImageListCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E6C4192CAFFD0300BDBF12 /* ImageListCellDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,6 +93,7 @@
 		22AC0E1C2C77903F00012CB5 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		22AC0E1E2C77946D00012CB5 /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
 		22AC0E202C78C8DA00012CB5 /* OAuth2Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Service.swift; sourceTree = "<group>"; };
+		22E6C4192CAFFD0300BDBF12 /* ImageListCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageListCellDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,6 +188,7 @@
 			children = (
 				222CB2BB2C5BCE28001CB633 /* ImagesListViewController.swift */,
 				222CB2EB2C5CF088001CB633 /* ImagesListCell.swift */,
+				22E6C4192CAFFD0300BDBF12 /* ImageListCellDelegate.swift */,
 				229183CC2CA9318300A2AA5F /* ImagesListService.swift */,
 			);
 			path = ImagesList;
@@ -422,6 +425,7 @@
 				229183C32C8ED1D200A2AA5F /* TabBarController.swift in Sources */,
 				229183CB2CA922C000A2AA5F /* ProfileModels.swift in Sources */,
 				22AC0E1D2C77904000012CB5 /* AuthViewController.swift in Sources */,
+				22E6C41A2CAFFD0300BDBF12 /* ImageListCellDelegate.swift in Sources */,
 				227458AB2C777FF4009262D2 /* Constants.swift in Sources */,
 				222CB2F72C5E6010001CB633 /* SingleImageViewController.swift in Sources */,
 				22AC0E1F2C77946D00012CB5 /* WebViewViewController.swift in Sources */,

@@ -1,7 +1,7 @@
 import UIKit
 
 final class SingleImageViewController: UIViewController {
-    var image: UIImage? {
+    var image: UIImage! {
         didSet {
             guard isViewLoaded, let image else { return }
             
@@ -10,6 +10,7 @@ final class SingleImageViewController: UIViewController {
             rescaleAndCenterImageInScrollView(image: image)
         }
     }
+    var fullImageURL: URL?
     
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var imageView: UIImageView!

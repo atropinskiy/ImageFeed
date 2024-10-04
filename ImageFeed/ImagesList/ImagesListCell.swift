@@ -27,7 +27,7 @@ class GradientColor {
 
 final class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
-    
+    weak var delegate: ImageListCellDelegate?
     
     @IBOutlet var dateLabel: UILabel!
     @IBOutlet var likeButton: UIButton!
@@ -38,10 +38,30 @@ final class ImagesListCell: UITableViewCell {
         setGradient()
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        cellImage.kf.cancelDownloadTask()
+    }
+    
     private func setGradient() {
         let gradientColor = GradientColor()
         let gradientLayer = gradientColor.createGradientLayer(for: dateLabel.bounds)
         dateLabel.layer.insertSublayer(gradientLayer, at: 0)
     }
     
+    func setIsLiked(isLiked: Bool){
+           let liked = UIImage(named: "likeOn")
+           let disLiked = UIImage(named: "likeOff")
+           if isLiked {
+               likeButton.setImage(liked, for: .normal)
+           } else {
+               likeButton.setImage(disLiked, for: .normal)
+           }
+       }
+    
+    @IBAction func likeButtonClicked(_ sender: Any) {
+        delegate?.imageListCellDidTapLike(self)
+    }
+    
+
 }
