@@ -14,7 +14,7 @@ struct Photo {
     let welcomeDescription: String?
     let thumbImageURL: String
     let fullImageURL: String
-    let isLiked: Bool
+    var isLiked: Bool
 }
 
 struct PhotoResult: Codable {

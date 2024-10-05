@@ -7,8 +7,6 @@ final class OAuth2TokenStorage {
         case bearerToken
     }
     
-    private let userDefaults = UserDefaults.standard
-    
     var token: String? {
         get {
             return KeychainWrapper.standard.string(forKey: Keys.bearerToken.rawValue)

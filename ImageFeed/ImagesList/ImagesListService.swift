@@ -66,17 +66,16 @@ final class ImagesListService {
     }
     
     func changeLikes(photoID: String, isLike: Bool, _ completion: @escaping(Result<Void, Error>) -> Void) {
-        
         guard let token = oAuth2TokenStorage.token else {
             fatalError("Bad token")
         }
-        
+
         // Определяем HTTP метод (POST для добавления лайка, DELETE для удаления)
-        let method = isLike ? "DELETE" : "POST"
+        let method = isLike ? "POST" : "DELETE"
         
         // Логирование процесса изменения лайка
-        print("Changing like for photoID: \(photoID), current state: \(isLike ? "Unlike" : "Like")")
-        
+        print("Changing like for photoID: \(photoID), current state: \(isLike ? "Like" : "Unlike")")
+
         // Формируем запрос
         var request = URLRequest.makeHTTPRequest(
             path: "/photos/\(photoID)/like",
@@ -84,7 +83,7 @@ final class ImagesListService {
             baseURL: Constants.defaultBaseURL!
         )
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        
+
         // Запуск задачи на сервере
         let task = urlSession.objectTask(for: request) { [weak self] (result: Result<Liked, Error>) in
             guard let self = self else { return }
@@ -95,19 +94,9 @@ final class ImagesListService {
                 
                 // Обновляем локально только при успешной операции
                 if let index = self.photos.firstIndex(where: { $0.id == photoID }) {
-                    let photo = self.photos[index]
-                    // Создаем обновленную фотографию с измененным статусом лайка
-                    let updatedPhoto = Photo(
-                        id: photo.id,
-                        size: photo.size,
-                        createdAt: photo.createdAt,
-                        welcomeDescription: photo.welcomeDescription,
-                        thumbImageURL: photo.thumbImageURL,
-                        fullImageURL: photo.fullImageURL,
-                        isLiked: !photo.isLiked
-                    )
-                    self.photos[index] = updatedPhoto
-                    print("Updated photo in local data. New like status: \(updatedPhoto.isLiked)")
+                    self.photos[index].isLiked.toggle() // Просто переключаем значение
+                    print("Updated photo in local data. New like status: \(self.photos[index].isLiked)")
+                    NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: self) // Уведомляем об изменении
                 }
                 completion(.success(()))
                 
@@ -116,10 +105,11 @@ final class ImagesListService {
                 completion(.failure(error))
             }
         }
-        
+
         // Запускаем задачу
         task.resume()
     }
+
     
     private func makeRequest(path: String) -> URLRequest {
         

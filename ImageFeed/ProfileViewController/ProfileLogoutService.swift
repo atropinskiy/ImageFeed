@@ -11,12 +11,15 @@ import WebKit
 
 final class ProfileLogoutService {
     static let shared = ProfileLogoutService()
+    private let storage = OAuth2TokenStorage.shared
     
     
     
     func logout() {
         cleanCookies()
-        switchToAuthScreen()
+        storage.clearToken()
+        switchToSplashScreen()
+        
     }
     
     private func cleanCookies() {
@@ -31,22 +34,18 @@ final class ProfileLogoutService {
         }
     }
     
-    private func switchToAuthScreen() {
+    private func switchToSplashScreen() {
         // Получаем текущее окно приложения
         guard let window = UIApplication.shared.windows.first else {
             print("Не удалось получить главное окно.")
             return
         }
         
-        // Ищем стартовый Navigation Controller из Storyboard
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        guard let navigationController = storyboard.instantiateInitialViewController() as? UINavigationController else {
-            print("Не удалось получить Navigation Controller")
-            return
-        }
-
-        // Устанавливаем Navigation Controller как rootViewController с анимацией
-        window.rootViewController = navigationController
+        // Создаем экземпляр SplashViewController программно
+        let splashViewController = SplashViewController()
+        
+        // Устанавливаем его как rootViewController с анимацией
+        window.rootViewController = splashViewController
         UIView.transition(with: window,
                           duration: 0.3,
                           options: .transitionCrossDissolve,

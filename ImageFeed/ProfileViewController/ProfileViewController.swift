@@ -93,23 +93,34 @@ final class ProfileViewController: UIViewController {
     }
     
     private func updateAvatar() {
-        guard
-            let profileImageURL = ProfileImageService.shared.avatarURL,
-            let url = URL(string: profileImageURL) else { return }
+        // Получаем avatarURL из ProfileImageService
+        guard let profileImageURL = ProfileImageService.shared.avatarURL,
+              let url = URL(string: profileImageURL) else {
+            print("Avatar URL is nil or invalid")
+            return
+        }
+
         let processor = RoundCornerImageProcessor(cornerRadius: 35)
-        print(profileImageURL)
+        print("Fetching avatar from URL: \(url)")
         avatarImageView.kf.indicatorType = .activity
         avatarImageView.kf.setImage(with: url,
-                                    placeholder: UIImage(named: "Placeholder"),
-                                    options: [.processor(processor),.cacheSerializer(FormatIndicatedCacheSerializer.png)])
-        let cache = ImageCache.default
-        cache.clearDiskCache()
-        cache.clearMemoryCache()
+                                     placeholder: UIImage(named: "Placeholder"),
+                                     options: [.processor(processor), .cacheSerializer(FormatIndicatedCacheSerializer.png)])
     }
     
+
     @objc
     private func didTapLogOutButton() {
-        profileLogoutService.logout()
+        let alert = UIAlertController(
+            title: "Пока, пока!",
+            message: "Уверены что хотите выйти?",
+            preferredStyle: .alert)
+        let action = UIAlertAction(title: "Да", style: .default, handler: {[weak self] _ in
+            guard let self = self else {return}
+            profileLogoutService.logout()})
+        let cancelAction = UIAlertAction(title: "Нет", style: .cancel)
+        alert.addAction(action)
+        alert.addAction(cancelAction)
+        self.present(alert, animated: true, completion: nil)
     }
-    
 }
