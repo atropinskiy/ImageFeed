@@ -16,7 +16,6 @@ final class SplashViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        storage.clearToken()
         
         if storage.token != nil {
             guard let token = storage.token else { return }
