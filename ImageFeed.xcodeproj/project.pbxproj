@@ -40,6 +40,7 @@
 		22AC0E1F2C77946D00012CB5 /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AC0E1E2C77946D00012CB5 /* WebViewViewController.swift */; };
 		22AC0E212C78C8DA00012CB5 /* OAuth2Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AC0E202C78C8DA00012CB5 /* OAuth2Service.swift */; };
 		22E6C41A2CAFFD0300BDBF12 /* ImageListCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E6C4192CAFFD0300BDBF12 /* ImageListCellDelegate.swift */; };
+		22E6C41C2CB17E1F00BDBF12 /* ProfileLogoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E6C41B2CB17E1E00BDBF12 /* ProfileLogoutService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,6 +95,7 @@
 		22AC0E1E2C77946D00012CB5 /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
 		22AC0E202C78C8DA00012CB5 /* OAuth2Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Service.swift; sourceTree = "<group>"; };
 		22E6C4192CAFFD0300BDBF12 /* ImageListCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageListCellDelegate.swift; sourceTree = "<group>"; };
+		22E6C41B2CB17E1E00BDBF12 /* ProfileLogoutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileLogoutService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,6 +200,7 @@
 			isa = PBXGroup;
 			children = (
 				222CB2F32C5E3CD8001CB633 /* ProfileViewController.swift */,
+				22E6C41B2CB17E1E00BDBF12 /* ProfileLogoutService.swift */,
 				229183BC2C8B007300A2AA5F /* ProfileImageService.swift */,
 				229183BA2C8A2B0100A2AA5F /* ProfileService.swift */,
 			);
@@ -417,6 +420,7 @@
 				229183CF2CA931C300A2AA5F /* ImageListModels.swift in Sources */,
 				228357332C78E7FF004F740E /* OAuthTokenResponse.swift in Sources */,
 				228357302C78E1E6004F740E /* OAuth2TokenStorage.swift in Sources */,
+				22E6C41C2CB17E1F00BDBF12 /* ProfileLogoutService.swift in Sources */,
 				229183BB2C8A2B0100A2AA5F /* ProfileService.swift in Sources */,
 				229183C92C8EEA6900A2AA5F /* URLSession+data.swift in Sources */,
 				229183CD2CA9318300A2AA5F /* ImagesListService.swift in Sources */,

@@ -28,19 +28,26 @@ class GradientColor {
 final class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
     weak var delegate: ImageListCellDelegate?
+    private var gradientLayer: CAGradientLayer?
     
     @IBOutlet var dateLabel: UILabel!
     @IBOutlet var likeButton: UIButton!
     @IBOutlet var cellImage: UIImageView!
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        setGradient()
-    }
-    
+       
     override func prepareForReuse() {
         super.prepareForReuse()
         cellImage.kf.cancelDownloadTask()
+        removeGradientLayer()
+    }
+    
+    override func awakeFromNib() {
+            super.awakeFromNib()
+            // Градиент будет добавляться в layoutSubviews
+        }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        setGradient()
     }
     
     private func setGradient() {
@@ -48,6 +55,11 @@ final class ImagesListCell: UITableViewCell {
         let gradientLayer = gradientColor.createGradientLayer(for: dateLabel.bounds)
         dateLabel.layer.insertSublayer(gradientLayer, at: 0)
     }
+    
+    private func removeGradientLayer() {
+            // Удаляем предыдущий градиентный слой, если он есть
+            gradientLayer?.removeFromSuperlayer()
+        }
     
     func setIsLiked(isLiked: Bool){
            let liked = UIImage(named: "likeOn")

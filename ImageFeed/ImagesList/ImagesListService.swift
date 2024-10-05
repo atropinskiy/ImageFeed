@@ -65,30 +65,59 @@ final class ImagesListService {
         task.resume()
     }
     
-    func changeLikes(photoID: String, isLike: Bool, _ completion: @escaping(Result<Void, Error>) -> Void){
+    func changeLikes(photoID: String, isLike: Bool, _ completion: @escaping(Result<Void, Error>) -> Void) {
         
-        guard let token = oAuth2TokenStorage.token  else {fatalError("Failed to create Token")}
-        let method = isLike ?  "DELETE" : "POST"
+        guard let token = oAuth2TokenStorage.token else {
+            fatalError("Bad token")
+        }
+        
+        // Определяем HTTP метод (POST для добавления лайка, DELETE для удаления)
+        let method = isLike ? "DELETE" : "POST"
+        
+        // Логирование процесса изменения лайка
+        print("Changing like for photoID: \(photoID), current state: \(isLike ? "Unlike" : "Like")")
+        
+        // Формируем запрос
         var request = URLRequest.makeHTTPRequest(
             path: "/photos/\(photoID)/like",
             httpMethod: method,
-            baseURL: Constants.defaultBaseURL!)
+            baseURL: Constants.defaultBaseURL!
+        )
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
-        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<Liked, Error>)in
-            guard let self = self else {return}
+        // Запуск задачи на сервере
+        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<Liked, Error>) in
+            guard let self = self else { return }
+            
             switch result {
             case .success(_):
-                if let index = self.photos.firstIndex(where: {$0.id == photoID}) {
+                print("Successfully changed like for photoID: \(photoID)")
+                
+                // Обновляем локально только при успешной операции
+                if let index = self.photos.firstIndex(where: { $0.id == photoID }) {
                     let photo = self.photos[index]
-                    let newPhoto = Photo(id: photo.id, size: photo.size, createdAt: photo.createdAt, welcomeDescription: photo.welcomeDescription, thumbImageURL: photo.thumbImageURL, fullImageURL: photo.fullImageURL, isLiked: !photo.isLiked)
-                    self.photos[index] = newPhoto
+                    // Создаем обновленную фотографию с измененным статусом лайка
+                    let updatedPhoto = Photo(
+                        id: photo.id,
+                        size: photo.size,
+                        createdAt: photo.createdAt,
+                        welcomeDescription: photo.welcomeDescription,
+                        thumbImageURL: photo.thumbImageURL,
+                        fullImageURL: photo.fullImageURL,
+                        isLiked: !photo.isLiked
+                    )
+                    self.photos[index] = updatedPhoto
+                    print("Updated photo in local data. New like status: \(updatedPhoto.isLiked)")
                 }
-                completion (.success(()))
+                completion(.success(()))
+                
             case .failure(let error):
-                completion (.failure(error))
+                print("Failed to change like for photoID: \(photoID), error: \(error.localizedDescription)")
+                completion(.failure(error))
             }
         }
+        
+        // Запускаем задачу
         task.resume()
     }
     

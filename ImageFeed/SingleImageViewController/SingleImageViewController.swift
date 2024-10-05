@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 final class SingleImageViewController: UIViewController {
     var image: UIImage! {
@@ -19,7 +20,9 @@ final class SingleImageViewController: UIViewController {
         super.viewDidLoad()
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
+        loadImage()
         configureImageView()
+        
     }
     
     @IBAction private func didTapBackButton(_ sender: Any) {
@@ -64,6 +67,26 @@ final class SingleImageViewController: UIViewController {
         rescaleAndCenterImageInScrollView(image: image)
     }
     
+    private func loadImage() {
+        guard let fullImageURL = fullImageURL else { return }
+        UIBlockingProgressHUD.show()
+        
+        imageView.kf.setImage(with: fullImageURL) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let imageResult):
+                // Устанавливаем изображение в imageView
+                self.imageView.image = imageResult.image
+                self.imageView.frame.size = imageResult.image.size
+                // Масштабируем и центрируем изображение после установки
+                self.rescaleAndCenterImageInScrollView(image: imageResult.image)
+            case .failure:
+                print("Failed to load image")
+            }
+        }
+    }
 }
 
 extension SingleImageViewController: UIScrollViewDelegate {

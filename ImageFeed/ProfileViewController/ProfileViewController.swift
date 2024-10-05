@@ -5,6 +5,7 @@ import Kingfisher
 final class ProfileViewController: UIViewController {
     
     private let profileService = ProfileService.shared
+    private let profileLogoutService = ProfileLogoutService.shared
     private let profileImageService = ProfileImageService.shared
     private var profileImageServiceObserver: NSObjectProtocol?
     private let nameLabel = UILabel()
@@ -12,6 +13,13 @@ final class ProfileViewController: UIViewController {
     private let messageLabel = UILabel()
     private let tokenStorage = OAuth2TokenStorage()
     private let avatarImageView = UIImageView()
+    private var logoutButton: UIButton = {
+        let button = UIButton.systemButton(with: UIImage(named: "Exit")!, target: self, action: #selector(didTapLogOutButton))
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.tintColor = .red
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.createCanvas()
@@ -47,11 +55,7 @@ final class ProfileViewController: UIViewController {
         messageLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        let exitButton = UIButton()
-        exitButton.setImage(UIImage(named: "Exit"), for: .normal)
-        exitButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(exitButton)
+        view.addSubview(logoutButton)
         view.addSubview(nameLabel)
         view.addSubview(nickLabel)
         view.addSubview(messageLabel)
@@ -63,10 +67,10 @@ final class ProfileViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             // Ограничения для imageView
-            exitButton.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
-            exitButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            exitButton.widthAnchor.constraint(equalToConstant: 44),
-            exitButton.heightAnchor.constraint(equalToConstant: 44),
+            logoutButton.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
+            logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            logoutButton.widthAnchor.constraint(equalToConstant: 44),
+            logoutButton.heightAnchor.constraint(equalToConstant: 44),
             
             // Ограничения для nameLabel
             nameLabel.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 8),
@@ -101,6 +105,11 @@ final class ProfileViewController: UIViewController {
         let cache = ImageCache.default
         cache.clearDiskCache()
         cache.clearMemoryCache()
+    }
+    
+    @objc
+    private func didTapLogOutButton() {
+        profileLogoutService.logout()
     }
     
 }

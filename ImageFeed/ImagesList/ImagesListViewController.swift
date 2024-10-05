@@ -94,7 +94,6 @@ extension ImagesListViewController: UITableViewDataSource {
     
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         let photo = photos[indexPath.row] // Получаем текущую фотографию
-        print("Configuring cell for index \(indexPath.row), photo ID: \(photo.id), thumbURL: \(photo.thumbImageURL)")
         guard let thumbURL = URL(string: photo.thumbImageURL), // Используем свойство thumbImageURL
               let placeholder = UIImage(named: "Stub") else { return }
         
@@ -103,11 +102,10 @@ extension ImagesListViewController: UITableViewDataSource {
             .transition(.fade(0.2)), // Плавный переход при загрузке изображения
             .cacheOriginalImage // Кеширование оригинального изображения
         ])
-        
         cell.setIsLiked(isLiked: photo.isLiked)
+        cell.delegate = self
         
         if let date = photo.createdAt {
-            print("DATATATATATA", date)
             cell.dateLabel.text = dateFormatter.string(from: date)
             print("Date label set to: \(cell.dateLabel.text ?? "")")
         } else {
@@ -142,5 +140,25 @@ extension ImagesListViewController: UITableViewDelegate {
     
 }
 
+extension ImagesListViewController: ImageListCellDelegate {
+    
+    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else {return}
+        let photo = photos[indexPath.row]
+        UIBlockingProgressHUD.show()
+        imagesListService.changeLikes(photoID: photo.id, isLike: !photo.isLiked) { [weak self]  result in
+            guard let self = self else {return}
+            switch result {
+            case .success:
+                self.photos = self.imagesListService.photos
+                cell.setIsLiked(isLiked: self.photos[indexPath.row].isLiked)
+                UIBlockingProgressHUD.dismiss()
+            case .failure(let error):
+                UIBlockingProgressHUD.dismiss()
+                self.showLikeAlert(with: error)
+            }
+        }
+    }
+}
 
 
