@@ -2,11 +2,10 @@ import Foundation
 import SwiftKeychainWrapper
 
 final class OAuth2TokenStorage {
+    static let shared = OAuth2TokenStorage()
     enum Keys: String {
         case bearerToken
     }
-    
-    private let userDefaults = UserDefaults.standard
     
     var token: String? {
         get {

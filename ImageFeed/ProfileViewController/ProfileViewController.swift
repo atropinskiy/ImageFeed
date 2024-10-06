@@ -5,6 +5,7 @@ import Kingfisher
 final class ProfileViewController: UIViewController {
     
     private let profileService = ProfileService.shared
+    private let profileLogoutService = ProfileLogoutService.shared
     private let profileImageService = ProfileImageService.shared
     private var profileImageServiceObserver: NSObjectProtocol?
     private let nameLabel = UILabel()
@@ -12,6 +13,13 @@ final class ProfileViewController: UIViewController {
     private let messageLabel = UILabel()
     private let tokenStorage = OAuth2TokenStorage()
     private let avatarImageView = UIImageView()
+    private var logoutButton: UIButton = {
+        let button = UIButton.systemButton(with: UIImage(named: "Exit")!, target: self, action: #selector(didTapLogOutButton))
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.tintColor = .red
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.createCanvas()
@@ -47,11 +55,7 @@ final class ProfileViewController: UIViewController {
         messageLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        let exitButton = UIButton()
-        exitButton.setImage(UIImage(named: "Exit"), for: .normal)
-        exitButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(exitButton)
+        view.addSubview(logoutButton)
         view.addSubview(nameLabel)
         view.addSubview(nickLabel)
         view.addSubview(messageLabel)
@@ -63,10 +67,10 @@ final class ProfileViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             // Ограничения для imageView
-            exitButton.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
-            exitButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            exitButton.widthAnchor.constraint(equalToConstant: 44),
-            exitButton.heightAnchor.constraint(equalToConstant: 44),
+            logoutButton.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
+            logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            logoutButton.widthAnchor.constraint(equalToConstant: 44),
+            logoutButton.heightAnchor.constraint(equalToConstant: 44),
             
             // Ограничения для nameLabel
             nameLabel.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 8),
@@ -89,18 +93,58 @@ final class ProfileViewController: UIViewController {
     }
     
     private func updateAvatar() {
-        guard
-            let profileImageURL = ProfileImageService.shared.avatarURL,
-            let url = URL(string: profileImageURL) else { return }
+        // Получаем avatarURL из ProfileImageService
+        guard let profileImageURL = ProfileImageService.shared.avatarURL,
+              let url = URL(string: profileImageURL) else {
+            print("Avatar URL is nil or invalid")
+            return
+        }
+
         let processor = RoundCornerImageProcessor(cornerRadius: 35)
-        print(profileImageURL)
+        print("Fetching avatar from URL: \(url)")
         avatarImageView.kf.indicatorType = .activity
         avatarImageView.kf.setImage(with: url,
-                                    placeholder: UIImage(named: "Placeholder"),
-                                    options: [.processor(processor),.cacheSerializer(FormatIndicatedCacheSerializer.png)])
-        let cache = ImageCache.default
-        cache.clearDiskCache()
-        cache.clearMemoryCache()
+                                     placeholder: UIImage(named: "Placeholder"),
+                                     options: [.processor(processor), .cacheSerializer(FormatIndicatedCacheSerializer.png)])
     }
+    
+    private func switchToSplashScreen() {
+        // Получаем текущее окно приложения
+        guard let window = UIApplication.shared.windows.first else {
+            print("Не удалось получить главное окно.")
+            return
+        }
+        
+        // Создаем экземпляр SplashViewController программно
+        let splashViewController = SplashViewController()
+        
+        // Устанавливаем его как rootViewController с анимацией
+        window.rootViewController = splashViewController
+        UIView.transition(with: window,
+                          duration: 0.3,
+                          options: .transitionCrossDissolve,
+                          animations: nil,
+                          completion: nil)
+    }
+    
+
+    @objc
+    private func didTapLogOutButton() {
+        let alert = UIAlertController(
+            title: "Пока, пока!",
+            message: "Уверены что хотите выйти?",
+            preferredStyle: .alert)
+        let action = UIAlertAction(title: "Да", style: .default, handler: {[weak self] _ in
+            guard let self = self else {return}
+            profileLogoutService.logout()
+            switchToSplashScreen()
+        })
+            
+        let cancelAction = UIAlertAction(title: "Нет", style: .cancel)
+        alert.addAction(action)
+        alert.addAction(cancelAction)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     
 }

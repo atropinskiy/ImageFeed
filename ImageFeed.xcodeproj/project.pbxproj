@@ -13,7 +13,7 @@
 		222CB2BF2C5BCE28001CB633 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 222CB2BE2C5BCE28001CB633 /* Base */; };
 		222CB2C12C5BCE2A001CB633 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 222CB2C02C5BCE2A001CB633 /* Assets.xcassets */; };
 		222CB2C42C5BCE2A001CB633 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 222CB2C32C5BCE2A001CB633 /* Base */; };
-		222CB2CF2C5BCE2B001CB633 /* ImageFeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222CB2CE2C5BCE2B001CB633 /* ImageFeedTests.swift */; };
+		222CB2CF2C5BCE2B001CB633 /* ImagesListServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222CB2CE2C5BCE2B001CB633 /* ImagesListServiceTests.swift */; };
 		222CB2D92C5BCE2B001CB633 /* ImageFeedUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222CB2D82C5BCE2B001CB633 /* ImageFeedUITests.swift */; };
 		222CB2DB2C5BCE2B001CB633 /* ImageFeedUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222CB2DA2C5BCE2B001CB633 /* ImageFeedUITestsLaunchTests.swift */; };
 		222CB2EC2C5CF088001CB633 /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222CB2EB2C5CF088001CB633 /* ImagesListCell.swift */; };
@@ -34,9 +34,13 @@
 		229183C62C8EE09200A2AA5F /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 229183C52C8EE09200A2AA5F /* Kingfisher */; };
 		229183C92C8EEA6900A2AA5F /* URLSession+data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229183C82C8EEA6900A2AA5F /* URLSession+data.swift */; };
 		229183CB2CA922C000A2AA5F /* ProfileModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229183CA2CA922C000A2AA5F /* ProfileModels.swift */; };
+		229183CD2CA9318300A2AA5F /* ImagesListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229183CC2CA9318300A2AA5F /* ImagesListService.swift */; };
+		229183CF2CA931C300A2AA5F /* ImageListModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229183CE2CA931C300A2AA5F /* ImageListModels.swift */; };
 		22AC0E1D2C77904000012CB5 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AC0E1C2C77903F00012CB5 /* AuthViewController.swift */; };
 		22AC0E1F2C77946D00012CB5 /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AC0E1E2C77946D00012CB5 /* WebViewViewController.swift */; };
 		22AC0E212C78C8DA00012CB5 /* OAuth2Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AC0E202C78C8DA00012CB5 /* OAuth2Service.swift */; };
+		22E6C41A2CAFFD0300BDBF12 /* ImageListCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E6C4192CAFFD0300BDBF12 /* ImageListCellDelegate.swift */; };
+		22E6C41C2CB17E1F00BDBF12 /* ProfileLogoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E6C41B2CB17E1E00BDBF12 /* ProfileLogoutService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,7 +70,7 @@
 		222CB2C32C5BCE2A001CB633 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		222CB2C52C5BCE2A001CB633 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		222CB2CA2C5BCE2B001CB633 /* ImageFeedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageFeedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		222CB2CE2C5BCE2B001CB633 /* ImageFeedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFeedTests.swift; sourceTree = "<group>"; };
+		222CB2CE2C5BCE2B001CB633 /* ImagesListServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListServiceTests.swift; sourceTree = "<group>"; };
 		222CB2D42C5BCE2B001CB633 /* ImageFeedUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageFeedUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		222CB2D82C5BCE2B001CB633 /* ImageFeedUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFeedUITests.swift; sourceTree = "<group>"; };
 		222CB2DA2C5BCE2B001CB633 /* ImageFeedUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFeedUITestsLaunchTests.swift; sourceTree = "<group>"; };
@@ -85,9 +89,13 @@
 		229183C22C8ED1D200A2AA5F /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		229183C82C8EEA6900A2AA5F /* URLSession+data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+data.swift"; sourceTree = "<group>"; };
 		229183CA2CA922C000A2AA5F /* ProfileModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModels.swift; sourceTree = "<group>"; };
+		229183CC2CA9318300A2AA5F /* ImagesListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListService.swift; sourceTree = "<group>"; };
+		229183CE2CA931C300A2AA5F /* ImageListModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageListModels.swift; sourceTree = "<group>"; };
 		22AC0E1C2C77903F00012CB5 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		22AC0E1E2C77946D00012CB5 /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
 		22AC0E202C78C8DA00012CB5 /* OAuth2Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Service.swift; sourceTree = "<group>"; };
+		22E6C4192CAFFD0300BDBF12 /* ImageListCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageListCellDelegate.swift; sourceTree = "<group>"; };
+		22E6C41B2CB17E1E00BDBF12 /* ProfileLogoutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileLogoutService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,7 +171,7 @@
 		222CB2CD2C5BCE2B001CB633 /* ImageFeedTests */ = {
 			isa = PBXGroup;
 			children = (
-				222CB2CE2C5BCE2B001CB633 /* ImageFeedTests.swift */,
+				222CB2CE2C5BCE2B001CB633 /* ImagesListServiceTests.swift */,
 			);
 			path = ImageFeedTests;
 			sourceTree = "<group>";
@@ -182,6 +190,8 @@
 			children = (
 				222CB2BB2C5BCE28001CB633 /* ImagesListViewController.swift */,
 				222CB2EB2C5CF088001CB633 /* ImagesListCell.swift */,
+				22E6C4192CAFFD0300BDBF12 /* ImageListCellDelegate.swift */,
+				229183CC2CA9318300A2AA5F /* ImagesListService.swift */,
 			);
 			path = ImagesList;
 			sourceTree = "<group>";
@@ -190,6 +200,7 @@
 			isa = PBXGroup;
 			children = (
 				222CB2F32C5E3CD8001CB633 /* ProfileViewController.swift */,
+				22E6C41B2CB17E1E00BDBF12 /* ProfileLogoutService.swift */,
 				229183BC2C8B007300A2AA5F /* ProfileImageService.swift */,
 				229183BA2C8A2B0100A2AA5F /* ProfileService.swift */,
 			);
@@ -209,6 +220,7 @@
 			children = (
 				228357322C78E7FF004F740E /* OAuthTokenResponse.swift */,
 				229183CA2CA922C000A2AA5F /* ProfileModels.swift */,
+				229183CE2CA931C300A2AA5F /* ImageListModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -405,15 +417,19 @@
 				222CB2F42C5E3CD8001CB633 /* ProfileViewController.swift in Sources */,
 				229183B92C8A28AA00A2AA5F /* UIBlockingProgressHUD.swift in Sources */,
 				222CB2B82C5BCE28001CB633 /* AppDelegate.swift in Sources */,
+				229183CF2CA931C300A2AA5F /* ImageListModels.swift in Sources */,
 				228357332C78E7FF004F740E /* OAuthTokenResponse.swift in Sources */,
 				228357302C78E1E6004F740E /* OAuth2TokenStorage.swift in Sources */,
+				22E6C41C2CB17E1F00BDBF12 /* ProfileLogoutService.swift in Sources */,
 				229183BB2C8A2B0100A2AA5F /* ProfileService.swift in Sources */,
 				229183C92C8EEA6900A2AA5F /* URLSession+data.swift in Sources */,
+				229183CD2CA9318300A2AA5F /* ImagesListService.swift in Sources */,
 				228DA28C2C7A596E006F74F0 /* WebViewViewControllerDelegate.swift in Sources */,
 				228357362C78F63F004F740E /* SplashViewController.swift in Sources */,
 				229183C32C8ED1D200A2AA5F /* TabBarController.swift in Sources */,
 				229183CB2CA922C000A2AA5F /* ProfileModels.swift in Sources */,
 				22AC0E1D2C77904000012CB5 /* AuthViewController.swift in Sources */,
+				22E6C41A2CAFFD0300BDBF12 /* ImageListCellDelegate.swift in Sources */,
 				227458AB2C777FF4009262D2 /* Constants.swift in Sources */,
 				222CB2F72C5E6010001CB633 /* SingleImageViewController.swift in Sources */,
 				22AC0E1F2C77946D00012CB5 /* WebViewViewController.swift in Sources */,
@@ -428,7 +444,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				222CB2CF2C5BCE2B001CB633 /* ImageFeedTests.swift in Sources */,
+				222CB2CF2C5BCE2B001CB633 /* ImagesListServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -781,24 +797,24 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/relatedcode/ProgressHUD";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 14.1.3;
+				kind = exactVersion;
+				version = 14.1.3;
 			};
 		};
 		229183BE2C8ECF0E00A2AA5F /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/jrendel/SwiftKeychainWrapper";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.1;
+				kind = exactVersion;
+				version = 4.0.1;
 			};
 		};
 		229183C42C8EE09200A2AA5F /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 7.12.0;
+				kind = exactVersion;
+				version = 7.12.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

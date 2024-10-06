@@ -46,3 +46,15 @@ extension URLSession {
         return task
     }
 }
+
+extension URLRequest {
+    static func makeHTTPRequest(path: String, httpMethod: String, baseURL: URL?) -> URLRequest {
+        guard let baseURL = baseURL else {
+            fatalError("Base URL is nil")
+        }
+        guard let url = URL(string: path, relativeTo: baseURL) else { fatalError("Invalid URL")}
+        var request = URLRequest(url: url)
+        request.httpMethod = httpMethod
+        return request
+    }
+}
