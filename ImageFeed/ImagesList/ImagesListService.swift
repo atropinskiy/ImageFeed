@@ -19,15 +19,15 @@ final class ImagesListService {
     
     func preparePhoto(_ photoResult: [PhotoResult]) {
         let newPhotos = photoResult.map { item in
-            // Логирование URL изображений
+            let date: Date? = dateFormatter.date(from: item.createdAt)
             print("Received photo URL: \(item.urls.thumb)")
             return Photo(
                 id: item.id,
                 size: CGSize(width: item.width, height: item.height), // Здесь у вас должен быть правильный размер
-                createdAt: dateFormatter.date(from: item.createdAt),
+                createdAt: date,
                 welcomeDescription: item.description,
-                thumbImageURL: item.urls.thumb,
-                fullImageURL: item.urls.full,
+                thumbImageURL: URL(string: item.urls.thumb),
+                fullImageURL: URL(string:item.urls.full),
                 isLiked: item.likedByUser
             )
         }
@@ -40,9 +40,8 @@ final class ImagesListService {
         assert(Thread.isMainThread)
         if task != nil { return }
 
-        let nextPage = lastLoadedPage == nil ? 1 : lastLoadedPage! + 1
-        lastLoadedPage = nextPage
-        
+        let nextPage = (lastLoadedPage ?? 0) + 1
+
         print("Fetching photos for page: \(nextPage)") // Логирование текущей страницы
 
         let request = makeRequest(path: "/photos?page=\(nextPage)&per_page=10")
@@ -53,6 +52,7 @@ final class ImagesListService {
             case .success(let photoResult):
                 print("Successfully fetched \(photoResult.count) photos") // Логирование количества загруженных фото
                 self.preparePhoto(photoResult)
+                lastLoadedPage = nextPage
                 NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: self)
                 print("Notification posted")
                 self.task = nil
@@ -77,10 +77,14 @@ final class ImagesListService {
         print("Changing like for photoID: \(photoID), current state: \(isLike ? "Like" : "Unlike")")
 
         // Формируем запрос
+        guard let baseURL = Constants.defaultBaseURL else {
+            fatalError("Base URL is nil")
+        }
+        
         var request = URLRequest.makeHTTPRequest(
             path: "/photos/\(photoID)/like",
             httpMethod: method,
-            baseURL: Constants.defaultBaseURL!
+            baseURL: baseURL
         )
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 
@@ -112,7 +116,6 @@ final class ImagesListService {
 
     
     private func makeRequest(path: String) -> URLRequest {
-        
         guard let url = URL(string: path, relativeTo: Constants.defaultBaseURL) else {fatalError("Failed to create URL for ImagesList")}
         guard let token = oAuth2TokenStorage.token else {fatalError("Failed to create Token")}
         var request = URLRequest(url: url)

@@ -18,8 +18,6 @@ final class ProfileLogoutService {
     func logout() {
         cleanCookies()
         storage.clearToken()
-        switchToSplashScreen()
-        
     }
     
     private func cleanCookies() {
@@ -34,22 +32,5 @@ final class ProfileLogoutService {
         }
     }
     
-    private func switchToSplashScreen() {
-        // Получаем текущее окно приложения
-        guard let window = UIApplication.shared.windows.first else {
-            print("Не удалось получить главное окно.")
-            return
-        }
-        
-        // Создаем экземпляр SplashViewController программно
-        let splashViewController = SplashViewController()
-        
-        // Устанавливаем его как rootViewController с анимацией
-        window.rootViewController = splashViewController
-        UIView.transition(with: window,
-                          duration: 0.3,
-                          options: .transitionCrossDissolve,
-                          animations: nil,
-                          completion: nil)
-    }
+
 }

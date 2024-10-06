@@ -43,7 +43,7 @@ final class ImagesListViewController: UIViewController {
         if segue.identifier == showSingleImageSegueIdentifier {
             let viewController = segue.destination as! SingleImageViewController
             let indexPath = sender as! IndexPath
-            let fullImageURL = URL(string: photos[indexPath.row].fullImageURL)
+            let fullImageURL = photos[indexPath.row].fullImageURL
             viewController.fullImageURL = fullImageURL
             
         } else {
@@ -94,7 +94,7 @@ extension ImagesListViewController: UITableViewDataSource {
     
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         let photo = photos[indexPath.row] // Получаем текущую фотографию
-        guard let thumbURL = URL(string: photo.thumbImageURL), // Используем свойство thumbImageURL
+        guard let thumbURL = photo.thumbImageURL, // Используем свойство thumbImageURL
               let placeholder = UIImage(named: "Stub") else { return }
         
         cell.cellImage.kf.indicatorType = .activity // Устанавливаем индикатор загрузки

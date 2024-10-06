@@ -108,6 +108,25 @@ final class ProfileViewController: UIViewController {
                                      options: [.processor(processor), .cacheSerializer(FormatIndicatedCacheSerializer.png)])
     }
     
+    private func switchToSplashScreen() {
+        // Получаем текущее окно приложения
+        guard let window = UIApplication.shared.windows.first else {
+            print("Не удалось получить главное окно.")
+            return
+        }
+        
+        // Создаем экземпляр SplashViewController программно
+        let splashViewController = SplashViewController()
+        
+        // Устанавливаем его как rootViewController с анимацией
+        window.rootViewController = splashViewController
+        UIView.transition(with: window,
+                          duration: 0.3,
+                          options: .transitionCrossDissolve,
+                          animations: nil,
+                          completion: nil)
+    }
+    
 
     @objc
     private func didTapLogOutButton() {
@@ -117,10 +136,15 @@ final class ProfileViewController: UIViewController {
             preferredStyle: .alert)
         let action = UIAlertAction(title: "Да", style: .default, handler: {[weak self] _ in
             guard let self = self else {return}
-            profileLogoutService.logout()})
+            profileLogoutService.logout()
+            switchToSplashScreen()
+        })
+            
         let cancelAction = UIAlertAction(title: "Нет", style: .cancel)
         alert.addAction(action)
         alert.addAction(cancelAction)
         self.present(alert, animated: true, completion: nil)
     }
+    
+    
 }

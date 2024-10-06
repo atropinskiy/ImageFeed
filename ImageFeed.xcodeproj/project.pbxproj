@@ -797,24 +797,24 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/relatedcode/ProgressHUD";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 14.1.3;
+				kind = exactVersion;
+				version = 14.1.3;
 			};
 		};
 		229183BE2C8ECF0E00A2AA5F /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/jrendel/SwiftKeychainWrapper";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.1;
+				kind = exactVersion;
+				version = 4.0.1;
 			};
 		};
 		229183C42C8EE09200A2AA5F /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 7.12.0;
+				kind = exactVersion;
+				version = 7.12.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
