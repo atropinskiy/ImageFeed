@@ -19,7 +19,12 @@ final class ImagesListService {
     
     func preparePhoto(_ photoResult: [PhotoResult]) {
         let newPhotos = photoResult.map { item in
-            let date: Date? = dateFormatter.date(from: item.createdAt)
+            let date: Date? = {
+                if let createdAtString = item.createdAt {
+                    return dateFormatter.date(from: createdAtString)
+                }
+                return nil // Возвращаем nil, если createdAt нет
+            }()
             print("Received photo URL: \(item.urls.thumb)")
             return Photo(
                 id: item.id,
@@ -39,15 +44,15 @@ final class ImagesListService {
     func fetchPhotosNextPage() {
         assert(Thread.isMainThread)
         if task != nil { return }
-
+        
         let nextPage = (lastLoadedPage ?? 0) + 1
-
+        
         print("Fetching photos for page: \(nextPage)") // Логирование текущей страницы
-
+        
         let request = makeRequest(path: "/photos?page=\(nextPage)&per_page=10")
         let task = urlSession.objectTask(for: request) { [weak self] (result: Result<[PhotoResult], Error>) in
             guard let self = self else { return }
-
+            
             switch result {
             case .success(let photoResult):
                 print("Successfully fetched \(photoResult.count) photos") // Логирование количества загруженных фото
@@ -69,13 +74,13 @@ final class ImagesListService {
         guard let token = oAuth2TokenStorage.token else {
             fatalError("Bad token")
         }
-
+        
         // Определяем HTTP метод (POST для добавления лайка, DELETE для удаления)
         let method = isLike ? "POST" : "DELETE"
         
         // Логирование процесса изменения лайка
         print("Changing like for photoID: \(photoID), current state: \(isLike ? "Like" : "Unlike")")
-
+        
         // Формируем запрос
         guard let baseURL = Constants.defaultBaseURL else {
             fatalError("Base URL is nil")
@@ -87,7 +92,7 @@ final class ImagesListService {
             baseURL: baseURL
         )
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-
+        
         // Запуск задачи на сервере
         let task = urlSession.objectTask(for: request) { [weak self] (result: Result<Liked, Error>) in
             guard let self = self else { return }
@@ -109,11 +114,11 @@ final class ImagesListService {
                 completion(.failure(error))
             }
         }
-
+        
         // Запускаем задачу
         task.resume()
     }
-
+    
     
     private func makeRequest(path: String) -> URLRequest {
         guard let url = URL(string: path, relativeTo: Constants.defaultBaseURL) else {fatalError("Failed to create URL for ImagesList")}
