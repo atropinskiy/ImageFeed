@@ -7,6 +7,7 @@ import ProgressHUD
 
 final class AuthViewController: UIViewController {
     weak var delegate: AuthViewControllerDelegate?
+    private let segwaySwowWebViewId = "ShowWebView"
     
     
     @IBOutlet private weak var loginButton: UIButton!
@@ -17,14 +18,21 @@ final class AuthViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        if segue.identifier == "ShowWebView" {
-            let authView = segue.destination as? WebViewViewController
-            if let unwrappedView = authView {
-                unwrappedView.delegate = self
+        if segue.identifier == segwaySwowWebViewId {
+            guard
+                let webViewViewController = segue.destination as? WebViewViewController
+            else {
+                assertionFailure("Failed to prepare for \(segwaySwowWebViewId)")
+                return
             }
+            let authHelper = AuthHelper()
+            let webViewPresenter = WebViewPresenter(authHelper: authHelper)
+            webViewViewController.presenter = webViewPresenter
+            webViewPresenter.view = webViewViewController
+            webViewViewController.delegate = self
+        } else {
+            super.prepare(for: segue, sender: sender)
         }
-        
     }
 }
 
@@ -36,4 +44,8 @@ extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         dismiss(animated: true)
     }
+}
+
+protocol AuthViewControllerDelegate: AnyObject {
+    func didAuthenticate(code: String)
 }

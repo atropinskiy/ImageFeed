@@ -13,8 +13,8 @@ final class ProfileViewController: UIViewController {
     private let messageLabel = UILabel()
     private let tokenStorage = OAuth2TokenStorage()
     private let avatarImageView = UIImageView()
-    private var logoutButton: UIButton = {
-        let button = UIButton.systemButton(with: UIImage(named: "Exit")!, target: self, action: #selector(didTapLogOutButton))
+    private let logoutButton: UIButton = {
+        let button = UIButton.systemButton(with: UIImage(named: "Exit")!, target: nil, action: nil)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = .red
         return button
@@ -36,7 +36,15 @@ final class ProfileViewController: UIViewController {
         updateAvatar()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tabBarController?.tabBar.backgroundColor = UIColor(named: "YP Black")
+        logoutButton.addTarget(self, action: #selector(didTapLogOutButton), for: .touchUpInside)
+    }
+   
+    
     func createCanvas() {
+        view.backgroundColor = .ypBlack
         avatarImageView.image = UIImage(named: "MockUserPhoto")
         avatarImageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(avatarImageView)
@@ -67,6 +75,7 @@ final class ProfileViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             // Ограничения для imageView
+            
             logoutButton.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
             logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             logoutButton.widthAnchor.constraint(equalToConstant: 44),

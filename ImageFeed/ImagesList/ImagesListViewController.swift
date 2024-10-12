@@ -31,13 +31,9 @@ final class ImagesListViewController: UIViewController {
                 self.updateTableViewAnimated()
                 UIBlockingProgressHUD.dismiss()
             }
-        if let tabBar = self.tabBarController?.tabBar {
-            tabBar.tintColor = UIColor.ypWhite // Цвет выбранного элемента
-            tabBar.barTintColor = UIColor.black // Цвет невыбранных элементов
-        }
+        view.backgroundColor = .ypBlack
         imagesListService.fetchPhotosNextPage()
     }
-    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showSingleImageSegueIdentifier {

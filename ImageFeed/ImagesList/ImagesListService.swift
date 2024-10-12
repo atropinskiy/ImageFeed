@@ -82,9 +82,7 @@ final class ImagesListService {
         print("Changing like for photoID: \(photoID), current state: \(isLike ? "Like" : "Unlike")")
         
         // Формируем запрос
-        guard let baseURL = Constants.defaultBaseURL else {
-            fatalError("Base URL is nil")
-        }
+        let baseURL = Constants.defaultBaseURL
         
         var request = URLRequest.makeHTTPRequest(
             path: "/photos/\(photoID)/like",
