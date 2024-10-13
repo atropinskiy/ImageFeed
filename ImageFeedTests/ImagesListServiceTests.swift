@@ -13,16 +13,35 @@ final class ImagesListServiceTests: XCTestCase {
         let service = ImagesListService()
         
         let expectation = self.expectation(description: "Wait for Notification")
-        NotificationCenter.default.addObserver(
+        var notificationReceived = false // Флаг для проверки, что уведомление получено
+
+        let observer = NotificationCenter.default.addObserver(
             forName: ImagesListService.didChangeNotification,
             object: nil,
             queue: .main) { _ in
-                expectation.fulfill()
+                if !notificationReceived {
+                    notificationReceived = true
+                    expectation.fulfill() // Выполняем ожидание только один раз
+                }
             }
         
         service.fetchPhotosNextPage()
+        
+        // Обязательно удалите наблюдателя после теста
+        defer {
+            NotificationCenter.default.removeObserver(observer)
+        }
+        
         wait(for: [expectation], timeout: 10)
         
         XCTAssertEqual(service.photos.count, 10)
+    }
+}
+
+final class WebViewTests: XCTestCase {
+    func testViewControllerCallsViewDidLoad() {
+        //given
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let viewController = storyboard.instantiateViewController(withIdentifier: "WebViewViewController") as! WebViewViewController
     }
 }

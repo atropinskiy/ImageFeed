@@ -23,12 +23,12 @@ final class ImagesListService {
                 if let createdAtString = item.createdAt {
                     return dateFormatter.date(from: createdAtString)
                 }
-                return nil // Возвращаем nil, если createdAt нет
+                return nil
             }()
             print("Received photo URL: \(item.urls.thumb)")
             return Photo(
                 id: item.id,
-                size: CGSize(width: item.width, height: item.height), // Здесь у вас должен быть правильный размер
+                size: CGSize(width: item.width, height: item.height),
                 createdAt: date,
                 welcomeDescription: item.description,
                 thumbImageURL: URL(string: item.urls.thumb),
@@ -81,15 +81,11 @@ final class ImagesListService {
         // Логирование процесса изменения лайка
         print("Changing like for photoID: \(photoID), current state: \(isLike ? "Like" : "Unlike")")
         
-        // Формируем запрос
-        guard let baseURL = Constants.defaultBaseURL else {
-            fatalError("Base URL is nil")
-        }
         
         var request = URLRequest.makeHTTPRequest(
             path: "/photos/\(photoID)/like",
             httpMethod: method,
-            baseURL: baseURL
+            baseURL: Constants.defaultBaseURL
         )
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
