@@ -86,6 +86,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="Fqt-bw-YU5"/>
                     <connections>
+                        <outlet property="backButton" destination="DXC-pr-jkZ" id="oRi-u5-Pco"/>
                         <outlet property="imageView" destination="MRx-Uo-yDL" id="9IL-xg-5i6"/>
                         <outlet property="scrollView" destination="pHB-le-fVA" id="ARb-ki-Fle"/>
                     </connections>
@@ -232,7 +233,7 @@
                             <constraint firstItem="jv7-eN-7yW" firstAttribute="centerY" secondItem="uvd-fQ-gTL" secondAttribute="centerY" id="kTn-gv-mGq"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="V3s-0W-7bE"/>
+                    <navigationItem key="navigationItem" customizationIdentifier="AuthViewController" id="V3s-0W-7bE"/>
                     <connections>
                         <outlet property="loginButton" destination="Aq9-wZ-eV3" id="1C6-5S-tNs"/>
                     </connections>
@@ -244,7 +245,7 @@
         <!--Navigation Item-->
         <scene sceneID="fgl-X1-Q1H">
             <objects>
-                <viewController modalPresentationStyle="fullScreen" id="FiI-wM-Wv1" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WebViewViewController" modalPresentationStyle="fullScreen" id="FiI-wM-Wv1" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="diD-jr-iXW">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

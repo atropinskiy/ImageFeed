@@ -1,17 +1,30 @@
 import UIKit
 import Kingfisher
+import WebKit
 
-
-final class ProfileViewController: UIViewController {
+protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfilePresenterProtocol? {get set}
     
+    func updateAvatar()
+    func didTapLogOutButton()
+    func createCanvas()
+    func updateProfile(profile: Profile?)
+    func updateRootViewControler()
+    func exitAlert(title: String, message: String, action: ((UIAlertAction) -> ())?)
+    func cleanCookies()
+    func switchToSplashScreen()
+    
+}
+
+final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
+    
+    private let storage = OAuth2TokenStorage.shared
+    var presenter: ProfilePresenterProtocol?
     private let profileService = ProfileService.shared
-    private let profileLogoutService = ProfileLogoutService.shared
     private let profileImageService = ProfileImageService.shared
-    private var profileImageServiceObserver: NSObjectProtocol?
     private let nameLabel = UILabel()
     private let nickLabel = UILabel()
     private let messageLabel = UILabel()
-    private let tokenStorage = OAuth2TokenStorage()
     private let avatarImageView = UIImageView()
     private let logoutButton: UIButton = {
         let button = UIButton.systemButton(with: UIImage(named: "Exit")!, target: nil, action: nil)
@@ -22,26 +35,58 @@ final class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.createCanvas()
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ProfileImageService.didChangeNotification,
-                object: nil,
-                queue: .main
-            ) { [weak self] _ in
-                guard let self = self else { return }
-                self.updateAvatar()                                 // 6
-            }
-        updateProfile(profile: profileService.profile)
-        updateAvatar()
+        logoutButton.accessibilityIdentifier = "logoutBtn"
+        presenter = ProfilePresenter(view: self)
+        presenter?.viewDidLoad()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tabBarController?.tabBar.backgroundColor = UIColor(named: "YP Black")
+        tabBarController?.tabBar.backgroundColor = .ypBlack
         logoutButton.addTarget(self, action: #selector(didTapLogOutButton), for: .touchUpInside)
     }
-   
+    
+    func updateProfile(profile: Profile?) {
+        guard let profile = profile else { return }
+        self.nameLabel.text = profile.name
+        self.nickLabel.text = profile.loginName
+        self.messageLabel.text = profile.bio
+    }
+    
+    func updateAvatar() {
+        // Получаем avatarURL из ProfileImageService
+        guard let profileImageURL = ProfileImageService.shared.avatarURL,
+              let url = URL(string: profileImageURL) else {
+            print("Avatar URL is nil or invalid")
+            return
+        }
+
+        let processor = RoundCornerImageProcessor(cornerRadius: 35)
+        print("Fetching avatar from URL: \(url)")
+        avatarImageView.kf.indicatorType = .activity
+        avatarImageView.kf.setImage(with: url,
+                                     placeholder: UIImage(named: "Placeholder"),
+                                     options: [.processor(processor), .cacheSerializer(FormatIndicatedCacheSerializer.png)])
+    }
+    
+    func switchToSplashScreen() {
+        // Получаем текущее окно приложения
+        guard let window = UIApplication.shared.windows.first else {
+            print("Не удалось получить главное окно.")
+            return
+        }
+        
+        // Создаем экземпляр SplashViewController программно
+        let splashViewController = SplashViewController()
+        
+        // Устанавливаем его как rootViewController с анимацией
+        window.rootViewController = splashViewController
+        UIView.transition(with: window,
+                          duration: 0.3,
+                          options: .transitionCrossDissolve,
+                          animations: nil,
+                          completion: nil)
+    }
     
     func createCanvas() {
         view.backgroundColor = .ypBlack
@@ -94,66 +139,41 @@ final class ProfileViewController: UIViewController {
             messageLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
         ])
     }
-    private func updateProfile(profile: Profile?) {
-        guard let profile = profile else { return }
-        self.nameLabel.text = profile.name
-        self.nickLabel.text = profile.loginName
-        self.messageLabel.text = profile.bio
-    }
     
-    private func updateAvatar() {
-        // Получаем avatarURL из ProfileImageService
-        guard let profileImageURL = ProfileImageService.shared.avatarURL,
-              let url = URL(string: profileImageURL) else {
-            print("Avatar URL is nil or invalid")
-            return
+    func cleanCookies() {
+        // Очищаем все куки из хранилища
+        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+        // Запрашиваем все данные из локального хранилища
+        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+            // Массив полученных записей удаляем из хранилища
+            records.forEach { record in
+                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+            }
         }
-
-        let processor = RoundCornerImageProcessor(cornerRadius: 35)
-        print("Fetching avatar from URL: \(url)")
-        avatarImageView.kf.indicatorType = .activity
-        avatarImageView.kf.setImage(with: url,
-                                     placeholder: UIImage(named: "Placeholder"),
-                                     options: [.processor(processor), .cacheSerializer(FormatIndicatedCacheSerializer.png)])
     }
     
-    private func switchToSplashScreen() {
-        // Получаем текущее окно приложения
-        guard let window = UIApplication.shared.windows.first else {
-            print("Не удалось получить главное окно.")
-            return
-        }
-        
-        // Создаем экземпляр SplashViewController программно
-        let splashViewController = SplashViewController()
-        
-        // Устанавливаем его как rootViewController с анимацией
-        window.rootViewController = splashViewController
-        UIView.transition(with: window,
-                          duration: 0.3,
-                          options: .transitionCrossDissolve,
-                          animations: nil,
-                          completion: nil)
-    }
-    
-
-    @objc
-    private func didTapLogOutButton() {
+    func exitAlert(title: String, message: String, action: ((UIAlertAction) -> ())?) {
         let alert = UIAlertController(
-            title: "Пока, пока!",
-            message: "Уверены что хотите выйти?",
+            title: title,
+            message: message,
             preferredStyle: .alert)
-        let action = UIAlertAction(title: "Да", style: .default, handler: {[weak self] _ in
-            guard let self = self else {return}
-            profileLogoutService.logout()
-            switchToSplashScreen()
-        })
-            
-        let cancelAction = UIAlertAction(title: "Нет", style: .cancel)
+        let action = UIAlertAction(title: "Да", style: .default, handler: action)
+        let cancelAction = UIAlertAction(title: "Нет", style: .cancel, handler: nil)
         alert.addAction(action)
         alert.addAction(cancelAction)
         self.present(alert, animated: true, completion: nil)
     }
     
-    
+    @objc
+    func didTapLogOutButton() {
+        presenter?.logOut()
+    }
+}
+
+extension ProfileViewController {
+    func updateRootViewControler() {
+        guard let window = UIApplication.shared.windows.first else {fatalError("Invalid Configuration")}
+        window.rootViewController = SplashViewController()
+        window.makeKeyAndVisible()
+    }
 }

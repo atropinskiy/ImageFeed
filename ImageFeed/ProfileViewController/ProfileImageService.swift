@@ -55,6 +55,7 @@ final class ProfileImageService {
         self.task = task
         task.resume()
     }
+    
 }
 
 private func makeRequest(username: String, token: String) -> URLRequest {

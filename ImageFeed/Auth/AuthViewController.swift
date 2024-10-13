@@ -15,6 +15,7 @@ final class AuthViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loginButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .bold)
+        loginButton.accessibilityIdentifier = "Authenticate"
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

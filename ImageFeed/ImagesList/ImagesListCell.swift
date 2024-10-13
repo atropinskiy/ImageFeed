@@ -41,6 +41,7 @@ final class ImagesListCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        likeButton.accessibilityIdentifier = "likeBtn"
     }
     
     override func layoutSubviews() {

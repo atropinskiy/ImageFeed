@@ -20,18 +20,22 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
     private var estimatedProgressObservation: NSKeyValueObservation?
     var presenter: WebViewPresenterProtocol?
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        webView.accessibilityIdentifier = "WebViewViewController"
         webView.navigationDelegate = self
+        setupWebView()
         presenter?.viewDidLoad()
-        estimatedProgressObservation = webView.observe(
-            \.estimatedProgress,
-             options: [],
-             changeHandler: { [weak self] _, _ in
-                 guard let self = self else { return }
-                 self.presenter?.didUpdateProgressValue(self.webView.estimatedProgress)
-             })
     }
+    
+    private func setupWebView() {
+            webView.navigationDelegate = self
+            
+            estimatedProgressObservation = webView.observe(\.estimatedProgress, options: []) { [weak self] webView, _ in
+                self?.presenter?.didUpdateProgressValue(webView.estimatedProgress)
+            }
+        }
     
     @IBAction private func backButtonTapped(_ sender: Any) {
         dismiss(animated: true, completion: nil)
